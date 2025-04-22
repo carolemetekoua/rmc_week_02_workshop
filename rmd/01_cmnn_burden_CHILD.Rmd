@@ -10,7 +10,10 @@ data_cmnn <- read_csv(here("data/burden-of-disease-cmnn.csv"))
 
 ```{r}
 # Filter the dataset to include only the three countries chosen by your group.
-data_cmnn_mini <- "WRITE_YOUR_CODE_HERE"
+data_cmnn_mini <- data_cmnn %>% 
+  clean_names() %>% 
+  filter(entity %in% c('Mauritius', 'South Africa', 'Lesotho')) %>% 
+  rename(dalys = dal_ys_disability_adjusted_life_years_communicable_maternal_neonatal_and_nutritional_diseases_sex_both_age_age_standardized_rate)
 ```
 
 ## Table of Estimates for CMNN Burden Over Time
@@ -18,8 +21,13 @@ data_cmnn_mini <- "WRITE_YOUR_CODE_HERE"
 ```{r}
 # Here render a table for the DALY burden over time for the three countries.
 # You should pivot the data wider to show each country in a separate column.
-data_cmnn_wide <- "WRITE_YOUR_CODE_HERE"
+data_cmnn_wide <- data_cmnn_mini %>%
+  mutate(dalys=round(dalys,0)) %>% 
+  pivot_wider(id_cols = year, 
+              names_from = entity,
+              values_from = dalys)
 # Use kable() from the knitr package to render the table.
+kable(data_cmnn_wide)
 ```
 
 ## Plot Showing Trends in CMNN Burden Over Time
@@ -27,8 +35,12 @@ data_cmnn_wide <- "WRITE_YOUR_CODE_HERE"
 ```{r}
 # Here, plot a line graph showing the trend of DALY burden for the chosen countries over time. You can use ggplot2 to create this plot. Each country's line should be a different color.
 # NOTE: Use your long 'mini' data frame for plotting, not the wide data used for the table. 
+ggplot(data_cmnn_mini, aes(year, dalys, colour=entity)) +
+  geom_line() +
+  labs(y='DALYs lost',
+       colour = 'Country')
 ```
 
 ## Summary of CMNN Burden Findings
 
-Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences.
+The lost is DALYS increased in South Africa and Lesotho and slightly declined in Mauritius. The increase in the incidence of HIV in South Africa and Lesotho in the early 1990's could lead increased DALY's lost. Mauritius is a third world country with good health facilities, thus a decline in DALY's lost in this country.

@@ -1,6 +1,6 @@
 ---
 title: "Global Disease Burden Analysis"
-author: "REPLACE WITH THE AUTHOR NAMES" # AUTHOR NAMES HERE!
+author: "Carole Metekoua" # AUTHOR NAMES HERE!
 output: html_document
 ---
 
